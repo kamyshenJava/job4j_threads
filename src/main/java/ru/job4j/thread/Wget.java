@@ -29,8 +29,6 @@ public class Wget implements Runnable {
                 long finish = System.nanoTime();
                 int timeElapsedMillis = (int) (finish - start) / 1000000;
                 int timeToSleep = Math.max((1000 / speed) - timeElapsedMillis, 0);
-                System.out.println(timeElapsedMillis);
-                System.out.println(timeToSleep);
                 Thread.sleep(timeToSleep);
             }
         } catch (Exception e) {
