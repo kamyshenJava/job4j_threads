@@ -14,7 +14,17 @@ public final class UserStore {
     private final List<User> store = new ArrayList<>();
 
     public synchronized boolean add(User user) {
-        return store.add(user);
+        boolean rsl = true;
+        for (User u : store) {
+            if (user.equals(u)) {
+                rsl = false;
+                break;
+            }
+        }
+        if (rsl) {
+            store.add(user);
+        }
+        return rsl;
     }
 
     public synchronized boolean update(User user) {

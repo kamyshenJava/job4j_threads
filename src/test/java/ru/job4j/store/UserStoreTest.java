@@ -18,4 +18,13 @@ public class UserStoreTest {
         assertEquals(expected, first.getAmount());
     }
 
+    @Test
+    public void whenAddUserWithSameIdThenFalse() {
+        User first = new User(0, 500);
+        User second = new User(0, 100);
+        UserStore userStore = new UserStore();
+        userStore.add(first);
+        assertFalse(userStore.add(second));
+    }
+
 }
