@@ -25,13 +25,15 @@ public final class UserStore {
     }
 
     public synchronized boolean transfer(int fromId, int toId, int amount) {
+        boolean rsl = false;
         User from = store.get(fromId);
         User to = store.get(toId);
-        boolean rsl = (from != null && to != null && fromId != toId
+        boolean condition = (from != null && to != null && fromId != toId
                 && store.get(fromId).getAmount() >= amount);
-        if (rsl) {
+        if (condition) {
             from.setAmount(from.getAmount() - amount);
             to.setAmount(to.getAmount() + amount);
+            rsl = true;
         }
         return rsl;
     }
