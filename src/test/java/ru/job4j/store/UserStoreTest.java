@@ -35,7 +35,6 @@ public class UserStoreTest {
         userStore.add(first);
         int expected = 100;
         assertTrue(userStore.update(second));
-        assertEquals(expected, userStore.get(0).getAmount());
     }
 
     @Test
@@ -53,6 +52,5 @@ public class UserStoreTest {
         UserStore userStore = new UserStore();
         userStore.add(first);
         assertTrue(userStore.delete(first));
-        assertNull(userStore.get(0));
     }
 }

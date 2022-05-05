@@ -24,22 +24,12 @@ public final class UserStore {
         return store.remove(user.getId(), user);
     }
 
-    public synchronized User get(int id) {
-        User temp = store.get(id);
-        User rsl = null;
-        if (temp != null) {
-            rsl = new User(temp.getId(), temp.getAmount());
-        }
-        return rsl;
-    }
-
     public synchronized boolean transfer(int fromId, int toId, int amount) {
-        boolean rsl = (store.containsKey(fromId) && store.containsKey(toId)
-                && fromId != toId
+        User from = store.get(fromId);
+        User to = store.get(toId);
+        boolean rsl = (from != null && to != null && fromId != toId
                 && store.get(fromId).getAmount() >= amount);
         if (rsl) {
-            User from = store.get(fromId);
-            User to = store.get(toId);
             from.setAmount(from.getAmount() - amount);
             to.setAmount(to.getAmount() + amount);
         }
