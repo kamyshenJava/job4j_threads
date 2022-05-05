@@ -11,16 +11,16 @@ public final class ParseFile {
     }
 
     private String getContentWithFilter(Predicate<Integer> filter) throws IOException {
-        String output = "";
+        StringBuilder output = new StringBuilder();
         try (InputStream i = new FileInputStream(file); BufferedInputStream bis = new BufferedInputStream(i)) {
             int data;
-            while ((data = bis.read()) > 0) {
+            while ((data = bis.read()) != -1) {
                 if (filter.test(data)) {
-                    output += (char) data;
+                    output.append((char) data);
                 }
             }
         }
-        return output;
+        return output.toString();
     }
 
     public String getContent() throws IOException {
