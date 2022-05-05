@@ -3,52 +3,39 @@ package ru.job4j.store;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @ThreadSafe
 public final class UserStore {
 
     @GuardedBy("this")
-    private final List<User> store = new ArrayList<>();
+    private final Map<Integer, User> store = new ConcurrentHashMap<>();
 
     public synchronized boolean add(User user) {
-        boolean rsl = true;
-        for (User u : store) {
-            if (user.equals(u)) {
-                rsl = false;
-                break;
-            }
-        }
-        if (rsl) {
-            store.add(user);
-        }
-        return rsl;
+        return store.putIfAbsent(user.getId(), user) == null;
     }
 
     public synchronized boolean update(User user) {
-        ListIterator<User> li = store.listIterator();
-        int id = user.getId();
-        boolean rsl = false;
-        while (li.hasNext()) {
-            if (li.next().getId() == id) {
-                rsl = true;
-                li.set(user);
-                break;
-            }
+        return store.replace(user.getId(), user) != null;
+    }
+
+    public synchronized boolean delete(User user) {
+        return store.remove(user.getId(), user);
+    }
+
+    public synchronized User get(int id) {
+        User temp = store.get(id);
+        User rsl = null;
+        if (temp != null) {
+            rsl = new User(temp.getId(), temp.getAmount());
         }
         return rsl;
     }
 
-    public synchronized boolean delete(User user) {
-        return store.remove(user);
-    }
-
     public synchronized boolean transfer(int fromId, int toId, int amount) {
-        int size = store.size();
-        boolean rsl = (fromId < size && fromId >= 0
-                && toId < size && toId >= 0 && fromId != toId
+        boolean rsl = (store.containsKey(fromId) && store.containsKey(toId)
+                && fromId != toId
                 && store.get(fromId).getAmount() >= amount);
         if (rsl) {
             User from = store.get(fromId);
