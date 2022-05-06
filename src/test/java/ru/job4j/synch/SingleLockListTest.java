@@ -26,6 +26,7 @@ public class SingleLockListTest {
 
     @Test
     public void whenIterateAndUpdateStorageThenConcurrentModificationException() {
+
         SingleLockList<Integer> singleLockList = new SingleLockList<>(Arrays.asList(1, 2, 3));
         Iterator<Integer> singleLockListIterator = singleLockList.iterator();
         System.out.println(singleLockListIterator.next());
