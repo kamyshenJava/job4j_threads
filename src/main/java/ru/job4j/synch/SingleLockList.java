@@ -13,7 +13,6 @@ public class SingleLockList<T> implements Iterable<T> {
     @GuardedBy("this")
     private final List<T> list;
 
-
     public SingleLockList(List<T> list) {
         this.list = copy(list);
     }
@@ -28,10 +27,10 @@ public class SingleLockList<T> implements Iterable<T> {
 
     @Override
     public synchronized Iterator<T> iterator() {
-        return list.iterator();
+        return copy(list).iterator();
     }
 
-    private List<T> copy(List<T> list) {
+    private synchronized List<T> copy(List<T> list) {
         return new ArrayList<>(list);
     }
 }

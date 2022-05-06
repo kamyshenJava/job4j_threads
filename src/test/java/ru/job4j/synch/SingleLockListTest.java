@@ -2,10 +2,7 @@ package ru.job4j.synch;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
@@ -25,5 +22,14 @@ public class SingleLockListTest {
         Set<Integer> rsl = new TreeSet<>();
         list.iterator().forEachRemaining(rsl::add);
         assertThat(rsl, is(Set.of(1, 2)));
+    }
+
+    @Test
+    public void whenIterateAndUpdateStorageThenConcurrentModificationException() {
+        SingleLockList<Integer> singleLockList = new SingleLockList<>(Arrays.asList(1, 2, 3));
+        Iterator<Integer> singleLockListIterator = singleLockList.iterator();
+        System.out.println(singleLockListIterator.next());
+        singleLockList.add(6);
+        System.out.println(singleLockListIterator.next()); // ConcurrentModificationException
     }
 }
