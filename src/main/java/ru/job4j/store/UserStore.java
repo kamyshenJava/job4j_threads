@@ -28,9 +28,8 @@ public final class UserStore {
         boolean rsl = false;
         User from = store.get(fromId);
         User to = store.get(toId);
-        boolean condition = (from != null && to != null && fromId != toId
-                && store.get(fromId).getAmount() >= amount);
-        if (condition) {
+        if (from != null && to != null && fromId != toId
+                && store.get(fromId).getAmount() >= amount) {
             from.setAmount(from.getAmount() - amount);
             to.setAmount(to.getAmount() + amount);
             rsl = true;
