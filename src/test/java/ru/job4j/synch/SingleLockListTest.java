@@ -30,6 +30,6 @@ public class SingleLockListTest {
         Iterator<Integer> singleLockListIterator = singleLockList.iterator();
         System.out.println(singleLockListIterator.next());
         singleLockList.add(6);
-        System.out.println(singleLockListIterator.next()); // ConcurrentModificationException
+        System.out.println(singleLockListIterator.next());
     }
 }
