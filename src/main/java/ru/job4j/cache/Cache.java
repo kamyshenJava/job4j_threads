@@ -14,11 +14,12 @@ public class Cache {
         return memory.computeIfPresent(model.getId(), (key, value) -> {
             int id = model.getId();
             int version = model.getVersion();
-            Base stored = memory.get(id);
-            if (stored.getVersion() != version) {
+            if (value.getVersion() != version) {
                 throw new OptimisticException("Versions are not equal");
             }
-            return new Base(id, version + 1);
+            Base rsl = new Base(id, version + 1);
+            rsl.setName(model.getName());
+            return rsl;
         }) != null;
     }
 
