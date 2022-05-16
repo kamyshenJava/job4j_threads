@@ -13,6 +13,7 @@ public class IndexFinder<T> extends RecursiveTask<Integer> {
     public IndexFinder(T[] array, T target) {
         this.array = array;
         this.target = target;
+        to = array.length - 1;
     }
 
     public IndexFinder(T[] array, T target, int from, int to) {
@@ -25,18 +26,17 @@ public class IndexFinder<T> extends RecursiveTask<Integer> {
     @Override
     protected Integer compute() {
         int rsl;
-        to = to == 0 ? array.length - 1 : to;
-        if (to - from < 11) {
-            rsl = search();
-        } else {
-            IndexFinder<T> left =
-                    new IndexFinder<>(array, target, from, (to - from) / 2 + from);
-            IndexFinder<T> right =
-                    new IndexFinder<>(array, target,  from + (to - from) / 2 + 1, to);
-            left.fork();
-            right.fork();
-            rsl = Math.max(left.join(), right.join());
+        int range = to - from;
+        if (range < 11) {
+            return search();
         }
+        IndexFinder<T> left =
+                new IndexFinder<>(array, target, from, range / 2 + from);
+        IndexFinder<T> right =
+                new IndexFinder<>(array, target,  from + range / 2 + 1, to);
+        left.fork();
+        right.fork();
+        rsl = Math.max(left.join(), right.join());
         return rsl;
     }
 
