@@ -46,9 +46,9 @@ public class IndexFinderTest {
         Obj target = new Obj(31, "b");
         IntStream.range(0, 50).forEach(x -> temp.add(new Obj(x, "a")));
         Obj[] arr = temp.toArray(new Obj[0]);
-        IndexFinder indexFinder = new IndexFinder(arr, target);
+        IndexFinder<Obj> indexFinder = new IndexFinder<>(arr, target);
         int expected = 31;
-        assertThat(expected, is(IndexFinder.find(arr, target)));
+        assertThat(expected, is(indexFinder.find(arr, target)));
     }
 
     @Test
@@ -57,8 +57,8 @@ public class IndexFinderTest {
         Obj target = new Obj(17, "b");
         IntStream.range(0, 50).forEach(x -> temp.add(new Obj(x, "a")));
         Obj[] arr = temp.toArray(new Obj[0]);
-        IndexFinder indexFinder = new IndexFinder(arr, target);
+        IndexFinder<Obj> indexFinder = new IndexFinder<>(arr, target);
         int expected = 17;
-        assertThat(expected, is(IndexFinder.find(arr, target)));
+        assertThat(expected, is(indexFinder.find(arr, target)));
     }
 }
